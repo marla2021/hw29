@@ -4,11 +4,11 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from ads.views.user import LocationViewSet, LocationDeleteView
+from ads.views.location import LocationViewSet
 
 router = routers.SimpleRouter()
 router.register(r'location', LocationViewSet)
-router.register(r'location', LocationDeleteView)
+
 
 
 
