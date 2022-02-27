@@ -48,22 +48,22 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    locations = serializers.SlugRelatedField(
+    location = serializers.SlugRelatedField(
         queryset=Location.objects.all(),
         many=True,
         slug_field="name"
     )
 
     def is_valid(self, raise_exception=False):
-        self._locations = self.initial_data.pop("locations")
+        self._location = self.initial_data.pop("location")
         return super().is_valid(raise_exception=raise_exception)
 
     def save(self):
         user = super().save()
 
-        for locations in self._locations:
-            obj, _ = Location.objects.get_or_create(name=locations)
-            user.locations.add(obj)
+        for location in self._location:
+            obj, _ = Location.objects.get_or_create(name=location)
+            user.location.add(obj)
 
         return user
 

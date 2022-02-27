@@ -2,13 +2,8 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.viewsets import ModelViewSet
 
 from ads.models import Location, User
-from ads.serializers import LocationSerializer, UserSerializer, UserCreateSerializer, UserUpdateSerializer, \
+from ads.serializers import UserSerializer, UserCreateSerializer, UserUpdateSerializer, \
     UserDeleteSerializer
-
-
-class LocationViewSet(ModelViewSet):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
 
 
 class UserView(ListAPIView):

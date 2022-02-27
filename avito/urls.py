@@ -4,10 +4,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from ads.views.user import LocationViewSet
+from ads.views.user import LocationViewSet, LocationDeleteView
 
 router = routers.SimpleRouter()
 router.register(r'location', LocationViewSet)
+router.register(r'location', LocationDeleteView)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
