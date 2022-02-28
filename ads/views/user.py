@@ -1,3 +1,4 @@
+from django.db.models import Count, Q
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 
@@ -7,7 +8,7 @@ from ads.serializers import UserSerializer, UserCreateSerializer, UserUpdateSeri
 
 
 class UserView(ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.all().annotate(ads=Count('ad', filter=Q(ad__is_published=True)))
     serializer_class = UserSerializer
 
 
