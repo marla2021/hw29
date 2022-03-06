@@ -4,8 +4,8 @@ from django.db import models
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    lat = models.FloatField()
-    lng = models.FloatField()
+    lat = models.FloatField(null=True)
+    lng = models.FloatField(null=True)
 
     class Meta:
         verbose_name = "Локация"
@@ -21,10 +21,10 @@ class User(AbstractUser):
         ("moderator", "Модератор"),
         ("admin", "Админ"),
     ]
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=50)
-    username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    username = models.CharField(max_length=100, unique=True)
+    password = models.CharField(max_length=100)
     role = models.CharField(max_length=10, choices=ROLES, default="member")
     age = models.PositiveIntegerField()
     location = models.ManyToManyField(Location)
