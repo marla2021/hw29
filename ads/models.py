@@ -74,3 +74,7 @@ class Ad(models.Model):
         return self.name
 
 
+class Selection(models.Model):
+    name = models.CharField(max_length=20)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Ad)
