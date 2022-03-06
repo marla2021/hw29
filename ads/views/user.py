@@ -1,8 +1,8 @@
 from django.db.models import Count, Q
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.viewsets import ModelViewSet
 
-from ads.models import Location, User
+
+from ads.models import User
 from ads.serializers import UserSerializer, UserCreateSerializer, UserUpdateSerializer, \
     UserDeleteSerializer
 
