@@ -4,6 +4,20 @@ from rest_framework import permissions
 from ads.models import User, Ad, Selection
 
 
+class SelectionUpdatePermission(permissions.BasePermission):
+    message = 'Managing others selections not permitted.'
+
+    def has_permission(self, request, view):
+        try:
+            entity = Selection.objects.get(pk=view.kwargs["pk"])
+        except Selection.DoesNotExist:
+            raise Http404
+
+        if entity.owner_id == request.user.id:
+            return True
+        return False
+
+
 class AdUpdatePermission(permissions.BasePermission):
     message = 'Managing others ads not permitted.'
 
@@ -19,15 +33,3 @@ class AdUpdatePermission(permissions.BasePermission):
         return False
 
 
-class SelectionUpdatePermission(permissions.BasePermission):
-    message = 'Managing others selections not permitted.'
-
-    def has_permission(self, request, view):
-        try:
-            entity = Selection.objects.get(pk=view.kwargs["pk"])
-        except Selection.DoesNotExist:
-            raise Http404
-
-        if entity.owner_id == request.user.id:
-            return True
-        return False
