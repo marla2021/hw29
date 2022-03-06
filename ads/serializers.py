@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ads.models import User, Location
+from ads.models import User, Location, Ad
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -78,3 +78,16 @@ class UserDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id"]
+
+class AdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
+class AdUpdateSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Ad
+        fields = "__all__"
+

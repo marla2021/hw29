@@ -16,6 +16,9 @@ class Location(models.Model):
 
 
 class User(AbstractUser):
+    MEMBER = "member"
+    MODERATOR = "moderator"
+    ADMIN = "admin"
     ROLES = [
         ("member", "Пользователь"),
         ("moderator", "Модератор"),
