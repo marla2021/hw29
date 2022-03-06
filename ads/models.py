@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -14,27 +15,32 @@ class Location(models.Model):
         return self.name
 
 
-# class User(models.Model):
-#     ROLES = [
-#         ("member", "Пользователь"),
-#         ("moderator", "Модератор"),
-#         ("admin", "Админ"),
-#     ]
-#     first_name = models.CharField(max_length=30)
-#     last_name = models.CharField(max_length=50)
-#     username = models.CharField(max_length=30)
-#     password = models.CharField(max_length=30)
-#     role = models.CharField(max_length=10, choices=ROLES, default="member")
-#     age = models.PositiveIntegerField()
-#     location = models.ManyToManyField(Location)
-#
-#     class Meta:
-#         verbose_name = "Пользователь"
-#         verbose_name_plural = "Пользователи"
-#         ordering = ["username"]
-#
-#     def __str__(self):
-#         return self.username
+class User(AbstractUser):
+    ROLES = [
+        ("member", "Пользователь"),
+        ("moderator", "Модератор"),
+        ("admin", "Админ"),
+    ]
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=50)
+    username = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=30)
+    role = models.CharField(max_length=10, choices=ROLES, default="member")
+    age = models.PositiveIntegerField()
+    location = models.ManyToManyField(Location)
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        ordering = ["username"]
+
+    def __str__(self):
+        return self.username
+
+
+    def save(self, *args, **kwargs):
+        self.set_password(self.password)
+        super().save()
 
 
 class Category(models.Model):

@@ -18,6 +18,7 @@ urlpatterns = [
     path('cat/',include("ads.urls_category")),
     path('ad/', include("ads.urls_ad")),
     path('user/', include("ads.urls_user")),
+    path('userauth/', include("authentication.urls")),
 ]
 
 urlpatterns += router.urls
