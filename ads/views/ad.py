@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from ads.models import Ad
 # from ads.permission import AdUpdatePermission
+from ads.permission import AdUpdatePermission
 from ads.serializers import AdSerializer, AdDetailSerializer
 
 
@@ -104,12 +105,12 @@ class AdDetailView(RetrieveAPIView):
 class AdUpdateView(CreateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdUpdatePermission]
 
 class AdDeleteView(DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdUpdatePermission]
 
 
 @method_decorator(csrf_exempt, name='dispatch')
