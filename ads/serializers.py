@@ -79,15 +79,23 @@ class UserDeleteSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id"]
 
-class AdSerializer(serializers.ModelSerializer):
+
+class AdListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ["id", "name"]
+
+
+class AdDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
         fields = '__all__'
 
-class AdUpdateSerializer(serializers.ModelSerializer):
+
+class AdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
-        fields = "__all__"
+        fields = '__all__'
 
 
 class SelectionListSerializer(serializers.ModelSerializer):
@@ -97,7 +105,7 @@ class SelectionListSerializer(serializers.ModelSerializer):
 
 
 class SelectionDetailSerializer(serializers.ModelSerializer):
-    items = AdSerializer(many=True)
+    items = AdListSerializer(many=True)
     class Meta:
         model = Selection
         fields = '__all__'

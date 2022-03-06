@@ -6,13 +6,13 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import  ListView, CreateView, UpdateView, DeleteView
 from rest_framework.generics import DestroyAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from ads.models import Ad
-from ads.permission import AdUpdatePermission
-from ads.serializers import AdSerializer
+# from ads.permission import AdUpdatePermission
+from ads.serializers import AdSerializer, AdDetailSerializer
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -103,13 +103,13 @@ class AdDetailView(RetrieveAPIView):
 
 class AdUpdateView(CreateAPIView):
     queryset = Ad.objects.all()
-    serializer_class = AdSerializer
-    permission_classes = [IsAuthenticated, AdUpdatePermission]
+    serializer_class = AdDetailSerializer
+    permission_classes = [IsAuthenticated]
 
 class AdDeleteView(DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
-    permission_classes = [IsAuthenticated, AdUpdatePermission]
+    permission_classes = [IsAuthenticated]
 
 
 @method_decorator(csrf_exempt, name='dispatch')

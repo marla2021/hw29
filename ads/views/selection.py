@@ -25,10 +25,10 @@ class SelectionCreateView(CreateAPIView):
 class SelectionUpdateView(UpdateAPIView):
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
-    permission_classes = [IsAuthenticated, SelectionUpdatePermission]
+    permission_classes = [IsAuthenticated]
 
 
 class SelectionDeleteView(DestroyAPIView):
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
-    permission_classes = [IsAuthenticated, SelectionUpdatePermission]
+    permission_classes = [IsAuthenticated]
