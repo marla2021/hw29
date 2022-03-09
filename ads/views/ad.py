@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import  ListView, CreateView, UpdateView, DeleteView
-from rest_framework.generics import DestroyAPIView, RetrieveAPIView, CreateAPIView
+from rest_framework.generics import DestroyAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from ads.models import Ad
@@ -102,7 +102,7 @@ class AdDetailView(RetrieveAPIView):
     serializer_class = AdSerializer
     permission_classes = [IsAuthenticated]
 
-class AdUpdateView(CreateAPIView):
+class AdUpdateView(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
     permission_classes = [IsAuthenticated, AdUpdatePermission]
