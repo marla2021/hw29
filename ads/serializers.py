@@ -59,11 +59,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         self._location = self.initial_data.pop("location")
         return super().is_valid(raise_exception=raise_exception)
 
-
+    def create(self, validated_data):
+        user = User.objects.create(**validated_data)
         for location in self._location:
             obj, _ = Location.objects.get_or_create(name=location)
             user.location.add(obj)
-
         return user
 
     class Meta:

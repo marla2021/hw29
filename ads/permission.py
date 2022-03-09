@@ -1,7 +1,7 @@
-from django.http import Http404
+
 from rest_framework import permissions
 
-from ads.models import User, Ad, Selection
+from ads.models import User, Selection
 
 
 class SelectionUpdatePermission(permissions.BasePermission):
@@ -13,6 +13,12 @@ class SelectionUpdatePermission(permissions.BasePermission):
             return True
         return False
 
+class IsAuthenticatedAndOwner(permissions.BasePermission):
+    message = 'You must be the owner of this object.'
+
+    def has_object_permission(self, request, view, obj):
+        return obj.user == request.user
+
 
 class AdUpdatePermission(permissions.BasePermission):
     message = 'Managing others ads not permitted.'
@@ -20,9 +26,8 @@ class AdUpdatePermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.role in [User.MEMBER, User.ADMIN]:
             return True
-        entity = Ad.objects.get(pk=view.kwargs["pk"])
-        if entity.author_id == request.user.id:
-            return True
         return False
+
+
 
 
