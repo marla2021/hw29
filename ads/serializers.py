@@ -59,8 +59,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         self._location = self.initial_data.pop("location")
         return super().is_valid(raise_exception=raise_exception)
 
-    def save(self):
-        user = super().save()
 
         for location in self._location:
             obj, _ = Location.objects.get_or_create(name=location)

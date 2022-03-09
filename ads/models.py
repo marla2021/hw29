@@ -28,8 +28,8 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
-    role = models.CharField(max_length=10, choices=ROLES, default="member")
-    age = models.PositiveIntegerField()
+    role = models.CharField(max_length=10, choices=ROLES, default=MEMBER)
+    age = models.PositiveIntegerField(null= True)
     location = models.ManyToManyField(Location)
 
     class Meta:
