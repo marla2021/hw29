@@ -1,10 +1,11 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    lat = models.FloatField()
-    lng = models.FloatField()
+    lat = models.FloatField(null=True)
+    lng = models.FloatField(null=True)
 
     class Meta:
         verbose_name = "Локация"
@@ -14,27 +15,35 @@ class Location(models.Model):
         return self.name
 
 
-# class User(models.Model):
-#     ROLES = [
-#         ("member", "Пользователь"),
-#         ("moderator", "Модератор"),
-#         ("admin", "Админ"),
-#     ]
-#     first_name = models.CharField(max_length=30)
-#     last_name = models.CharField(max_length=50)
-#     username = models.CharField(max_length=30)
-#     password = models.CharField(max_length=30)
-#     role = models.CharField(max_length=10, choices=ROLES, default="member")
-#     age = models.PositiveIntegerField()
-#     location = models.ManyToManyField(Location)
-#
-#     class Meta:
-#         verbose_name = "Пользователь"
-#         verbose_name_plural = "Пользователи"
-#         ordering = ["username"]
-#
-#     def __str__(self):
-#         return self.username
+class User(AbstractUser):
+    MEMBER = "member"
+    MODERATOR = "moderator"
+    ADMIN = "admin"
+    ROLES = [
+        ("member", "Пользователь"),
+        ("moderator", "Модератор"),
+        ("admin", "Админ"),
+    ]
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    username = models.CharField(max_length=100, unique=True)
+    password = models.CharField(max_length=100)
+    role = models.CharField(max_length=10, choices=ROLES, default=MEMBER)
+    age = models.PositiveIntegerField(null= True)
+    location = models.ManyToManyField(Location)
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        ordering = ["username"]
+
+    def __str__(self):
+        return self.username
+
+
+    def save(self, *args, **kwargs):
+        self.set_password(self.password)
+        super().save()
 
 
 class Category(models.Model):
@@ -65,3 +74,7 @@ class Ad(models.Model):
         return self.name
 
 
+class Selection(models.Model):
+    name = models.CharField(max_length=20)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Ad)

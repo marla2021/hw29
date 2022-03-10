@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ads.models import User, Location
+from ads.models import User, Location, Ad, Selection
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -59,13 +59,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         self._location = self.initial_data.pop("location")
         return super().is_valid(raise_exception=raise_exception)
 
-    def save(self):
-        user = super().save()
-
+    def create(self, validated_data):
+        user = User.objects.create(**validated_data)
         for location in self._location:
             obj, _ = Location.objects.get_or_create(name=location)
             user.location.add(obj)
-
         return user
 
     class Meta:
@@ -78,3 +76,41 @@ class UserDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id"]
+
+
+class AdListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ["id", "name"]
+
+
+class AdDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
+
+class AdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
+
+class SelectionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Selection
+        fields = ["id", "name"]
+
+
+class SelectionDetailSerializer(serializers.ModelSerializer):
+    items = AdListSerializer(many=True)
+    class Meta:
+        model = Selection
+        fields = '__all__'
+
+
+class SelectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Selection
+        fields = '__all__'
+
