@@ -1,5 +1,10 @@
+from datetime import date
+
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 
 class Location(models.Model):
@@ -14,6 +19,14 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+USER_MIN_AGE = 9
+
+def check_birth_date(value: date):
+    delta = relativedelta(date.today(), value).years
+    if delta < USER_MIN_AGE:
+        raise ValidationError(
+            'You are too small',
+        )
 
 class User(AbstractUser):
     MEMBER = "member"
@@ -31,6 +44,8 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLES, default=MEMBER)
     age = models.PositiveIntegerField(null= True)
     location = models.ManyToManyField(Location)
+    birth_date = models.DateField(validators=[check_birth_date], null=True)
+    email = models.EmailField(unique=True, null=True)
 
     class Meta:
         verbose_name = "Пользователь"
@@ -41,13 +56,9 @@ class User(AbstractUser):
         return self.username
 
 
-    def save(self, *args, **kwargs):
-        self.set_password(self.password)
-        super().save()
-
-
 class Category(models.Model):
     name = models.CharField(max_length=30)
+    slug = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(5)])
 
     class Meta:
         verbose_name = "Категория"
@@ -58,9 +69,9 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(name = models.CharField(max_length=20, validators=[MinLengthValidator(10)]), null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    price = models.PositiveIntegerField()
+    price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     description = models.TextField(null=True)
     is_published = models.BooleanField(default=False)
     image = models.ImageField(upload_to="upload_image/", null=True)
