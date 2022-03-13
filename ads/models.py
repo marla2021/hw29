@@ -6,6 +6,8 @@ from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from rest_framework.exceptions import ValidationError
 
+from ads.serializers import CheckRamblerEmail
+
 
 class Location(models.Model):
     name = models.CharField(max_length=100)

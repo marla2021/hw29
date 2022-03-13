@@ -3,6 +3,17 @@ from rest_framework import serializers
 from ads.models import User, Location, Ad, Selection
 
 
+class NotTrueValidator:
+    def __call__(self, value):
+        raise serializers.ValidationError("New ad can't published")
+
+
+class CheckRamblerEmail:
+    def __call__(self, value):
+        if value.endswith("rambler.ru"):
+            raise serializers.ValidationError("You are can't register")
+
+
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
@@ -28,7 +39,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         many=True,
         slug_field="name"
     )
-
+    email = serializers.EmailField(validators=[CheckRamblerEmail()])
     def is_valid(self, raise_exception=False):
         self._location = self.initial_data.pop("location")
         return super().is_valid(raise_exception=raise_exception)
@@ -91,6 +102,7 @@ class AdDetailSerializer(serializers.ModelSerializer):
 
 
 class AdSerializer(serializers.ModelSerializer):
+    is_published = serializers.BooleanField(validators=[NotTrueValidator])
     class Meta:
         model = Ad
         fields = '__all__'
