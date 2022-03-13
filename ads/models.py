@@ -6,7 +6,6 @@ from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from rest_framework.exceptions import ValidationError
 
-from ads.serializers import CheckRamblerEmail
 
 
 class Location(models.Model):
@@ -39,8 +38,8 @@ class User(AbstractUser):
         ("moderator", "Модератор"),
         ("admin", "Админ"),
     ]
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=10, choices=ROLES, default=MEMBER)
@@ -71,7 +70,7 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    name = models.CharField(name = models.CharField(max_length=20, validators=[MinLengthValidator(10)]), null=True)
+    name = models.CharField(max_length=20, validators=[MinLengthValidator(10)], null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     description = models.TextField(null=True)

@@ -96,9 +96,14 @@ class AdListSerializer(serializers.ModelSerializer):
 
 
 class AdDetailSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        slug_field='first_name',
+        read_only=True,
+    )
+
     class Meta:
         model = Ad
-        fields = '__all__'
+        fields = ["id", "name", "author_id", "price", "description", "is_published", "category_id", "image"]
 
 
 class AdSerializer(serializers.ModelSerializer):
