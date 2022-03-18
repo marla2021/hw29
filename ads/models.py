@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser
@@ -38,15 +38,15 @@ class User(AbstractUser):
         ("moderator", "Модератор"),
         ("admin", "Админ"),
     ]
+
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=10, choices=ROLES, default=MEMBER)
-    age = models.PositiveIntegerField(null= True)
     location = models.ManyToManyField(Location)
-    birth_date = models.DateField(validators=[check_birth_date], null=True)
-    email = models.EmailField(unique=True, null=True)
+    birth_date = models.DateField(validators=[check_birth_date])
+    email = models.EmailField(unique=True)
 
     class Meta:
         verbose_name = "Пользователь"
@@ -56,10 +56,16 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    @property
+    def age(self):
+        now: date = datetime.utcnow().date()
+        return relativedelta(now, self.birth_date).years
+
 
 class Category(models.Model):
-    name = models.CharField(max_length=30)
-    slug = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(5)])
+    slug = models.CharField(max_length=10,validators=[MinLengthValidator(5)],blank=True, null=True)
+    name = models.CharField(max_length=100)
+
 
     class Meta:
         verbose_name = "Категория"
@@ -70,13 +76,13 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    name = models.CharField(max_length=20, validators=[MinLengthValidator(10)], null=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=50, validators=[MinLengthValidator(10)])
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     is_published = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="upload_image/", null=True)
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT, null=True)
+    image = models.ImageField(upload_to="upload_image/", null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name = "Объявление"

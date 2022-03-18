@@ -6,23 +6,23 @@ def test_ads_create(client, user, category):
     response = client.post(
         "/ad/create/",
         {
-            "name": "nnnnnnnnnnnnnn",
+            "name": "test",
             "price": 10,
             "description": "test description",
             "is_published": False,
-            "author": user.id,
-            "category": category.id
+            "author_id": user.id,
+            "category_id": category.id,
         },
-        content_type="application/json")
+        content_type="application/json",
+    )
 
     assert response.status_code == 201
-    assert response.data == {
-        "id": 2,
-        "author": user.id,
-        "category": category.id,
-        "description": 'test description',
-        "image": None,
+    assert response.json == {
+        "id": 26,
+        "author_id": user.id,
+        "category_id": category.id,
+        "description": "test description",
         "is_published": False,
-        "name": "nnnnnnnnnnnnnn",
+        "name": "test",
         "price": 10,
     }

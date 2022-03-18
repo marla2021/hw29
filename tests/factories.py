@@ -7,14 +7,16 @@ class CategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Category
 
-    slug = factory.Faker("color")
 
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    username = factory.Faker("name")
+    username = factory.Faker("user_name")
+    birth_date = factory.Faker("date_of_birth", minimum_age=9)
+    email = factory.Faker("email", domain="gmail.com")
+
 
 class AdFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -23,3 +25,4 @@ class AdFactory(factory.django.DjangoModelFactory):
     category = factory.SubFactory(CategoryFactory)
     author = factory.SubFactory(UserFactory)
     price = 19
+    id = factory.Sequence(lambda n: '%s' % n)

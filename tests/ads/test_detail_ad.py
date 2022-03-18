@@ -11,4 +11,13 @@ def test_detail_ad(client, ad, user_token):
         HTTP_AUTHORIZATION=f"Bearer {user_token}")
 
     assert response.status_code == 200
-    assert response.data == AdDetailSerializer(ad).data
+    assert response.json() == {
+        "id": ad.id,
+        "is_published": ad.is_published,
+        "name": ad.name,
+        "price": ad.price,
+        "description": ad.description,
+        "image": ad.image.url if ad.image else None,
+        "author": ad.author_id,
+        "category": ad.category_id
+    }
