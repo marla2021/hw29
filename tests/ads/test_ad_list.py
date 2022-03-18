@@ -1,6 +1,5 @@
 import pytest
 
-from ads.serializers import AdDetailSerializer
 from tests.factories import AdFactory
 
 
