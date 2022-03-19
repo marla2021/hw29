@@ -1,7 +1,5 @@
 import pytest
 
-from ads.serializers import AdDetailSerializer
-
 
 @pytest.mark.django_db
 def test_detail_ad(client, ad, user_token):
