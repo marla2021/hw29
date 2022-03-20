@@ -94,7 +94,7 @@ class AdCreateView(CreateView):
             "is_published": ad.is_published,
             # "image": ad.image.url,
             "category_id": ad.category_id,
-        })
+        }, status=201)
 
 
 class AdDetailView(RetrieveAPIView):

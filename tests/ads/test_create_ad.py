@@ -17,7 +17,7 @@ def test_ads_create(client, user, category):
     )
 
     assert response.status_code == 201
-    assert response.json == {
+    assert response.json() == {
         "id": 1,
         "name": "test",
         "author_id": user.id,
