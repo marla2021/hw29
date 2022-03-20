@@ -11,7 +11,9 @@
        "age": 21,
        "location": [
          1
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbghh@jnjn.ru"
      }},
     {
     "pk": 2,
@@ -25,7 +27,9 @@
        "age": 24,
        "location": [
          3
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbgeehh@jnjn.ru"
      }},
     {
     "pk": 3,
@@ -39,7 +43,9 @@
        "age": 29,
        "location": [
          8
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hb1gheh@jnjn.ru"
      }},
     {
     "pk": 4,
@@ -53,7 +59,9 @@
        "age": 19,
        "location": [
          10
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbgh1h@jnjn.ru"
      }},
     {
     "pk": 5,
@@ -67,7 +75,9 @@
        "age": 41,
        "location": [
          2
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbgh2h@jnjn.ru"
      }},
     {
     "pk": 6,
@@ -81,7 +91,9 @@
        "age": 37,
        "location": [
          4
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbghh333@jnjn.ru"
      }},
     {
     "pk": 7,
@@ -95,7 +107,9 @@
        "age": 26,
        "location": [
          7
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbgh33h@jnjn.ru"
      }},
     {
     "pk": 8,
@@ -109,7 +123,9 @@
        "age": 24,
        "location": [
          5
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbssghh@jnjn.ru"
      }},
     {
     "pk": 9,
@@ -123,7 +139,9 @@
        "age": 22,
        "location": [
          9
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbggghh@jnjn.ru"
      }},
    {
     "pk": 10,
@@ -137,6 +155,8 @@
        "age": 35,
        "location": [
          6
-       ]
+       ],
+       "birth_date": "2000-12-01",
+       "email": "hbghrrh@jnjn.ru"
      }}
 ]

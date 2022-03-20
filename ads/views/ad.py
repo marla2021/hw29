@@ -81,7 +81,7 @@ class AdCreateView(CreateView):
             price=ad_data["price"],
             description=ad_data["description"],
             is_published=ad_data["is_published"],
-            image=ad_data["image"],
+            # image=ad_data["image"],
             category_id=ad_data["category_id"],
         )
 
@@ -92,9 +92,9 @@ class AdCreateView(CreateView):
             "price": ad.price,
             "description": ad.description,
             "is_published": ad.is_published,
-            "image": ad.image,
+            # "image": ad.image.url,
             "category_id": ad.category_id,
-        }, status=status.HTTP_201_CREATED)
+        })
 
 
 class AdDetailView(RetrieveAPIView):

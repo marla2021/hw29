@@ -1,5 +1,11 @@
+from datetime import date, datetime
+
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
+from rest_framework.exceptions import ValidationError
+
 
 
 class Location(models.Model):
@@ -14,6 +20,14 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+USER_MIN_AGE = 9
+
+def check_birth_date(value: date):
+    delta = relativedelta(date.today(), value).years
+    if delta < USER_MIN_AGE:
+        raise ValidationError(
+            'You are too small',
+        )
 
 class User(AbstractUser):
     MEMBER = "member"
@@ -24,13 +38,15 @@ class User(AbstractUser):
         ("moderator", "Модератор"),
         ("admin", "Админ"),
     ]
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=10, choices=ROLES, default=MEMBER)
-    age = models.PositiveIntegerField(null= True)
     location = models.ManyToManyField(Location)
+    birth_date = models.DateField(validators=[check_birth_date])
+    email = models.EmailField(unique=True)
 
     class Meta:
         verbose_name = "Пользователь"
@@ -40,14 +56,16 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-
-    def save(self, *args, **kwargs):
-        self.set_password(self.password)
-        super().save()
+    @property
+    def age(self):
+        now: date = datetime.utcnow().date()
+        return relativedelta(now, self.birth_date).years
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=30)
+    slug = models.CharField(max_length=10,validators=[MinLengthValidator(5)],blank=True, null=True)
+    name = models.CharField(max_length=100)
+
 
     class Meta:
         verbose_name = "Категория"
@@ -58,13 +76,13 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    name = models.CharField(max_length=100)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    price = models.PositiveIntegerField()
-    description = models.TextField(null=True)
+    name = models.CharField(max_length=50, validators=[MinLengthValidator(10)])
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    description = models.TextField(null=True, blank=True)
     is_published = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="upload_image/", null=True)
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT, null=True)
+    image = models.ImageField(upload_to="upload_image/", null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name = "Объявление"
