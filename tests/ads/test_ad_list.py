@@ -8,7 +8,7 @@ def test_ads_list(client, ad, user_token):
     response = client.get("/ad/")
     ads_factories = AdFactory.create_batch(1)
     ads = []
-    i=1
+    i=3
     for ad in ads_factories:
         ads.append({
             "id": i,
